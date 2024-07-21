@@ -1,36 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from 'antd'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Menu } from 'antd'
+import { useEffect, useState } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const menus = [
+    { label: '文本替换', key: 'replace' },
+    { label: '表单校验', key: 'validate' },
+    { label: '字符串提取', key: 'extract' },
+  ]
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
+  function onSelect({ key }) {
+    navigate(`/${key}`)
+    setSelectedKeys([key])
+  }
+  useEffect(() => {
+    setSelectedKeys([location.pathname.slice(1)])
+  }, [])
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Menu
+        items={menus}
+        mode="horizontal"
+        selectedKeys={selectedKeys}
+        onSelect={onSelect}
+      />
+      <div className="p-4">
+        <Outlet></Outlet>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-
-      <Button type="primary">Button</Button>
     </>
   )
 }
