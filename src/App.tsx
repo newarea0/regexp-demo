@@ -25,9 +25,10 @@ function App() {
         items={menus}
         mode="horizontal"
         selectedKeys={selectedKeys}
+        className="justify-center"
         onSelect={onSelect}
       />
-      <div className="p-4">
+      <div className="p-5">
         <Outlet></Outlet>
       </div>
     </>
